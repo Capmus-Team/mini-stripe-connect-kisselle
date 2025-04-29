@@ -3,53 +3,181 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stripe Connect Marketplace</title>
+  <title>Stripe Connect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary-color: #000000;
+      --primary-hover: #333333;
+      --background-color: #ffffff;
+      --text-color: #000000;
+      --border-color: #e1e4e8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background-color: white;
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .header-content {
       max-width: 800px;
       margin: 0 auto;
-      padding: 20px;
-      line-height: 1.6;
+      padding: 0 20px;
     }
+
+    .main-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    .card {
+      background-color: white;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-color);
+    }
+
     .button {
       display: inline-block;
-      padding: 10px 20px;
-      background-color: #635bff;
+      padding: 12px 24px;
+      background-color: var(--primary-color);
       color: white;
       text-decoration: none;
       border-radius: 4px;
-      margin: 10px 0;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s;
     }
+
     .button:hover {
-      background-color: #4b45cc;
+      background-color: var(--primary-hover);
     }
-    .container {
-      margin-top: 40px;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-weight: 500;
+      color: var(--text-color);
+      font-size: 0.875rem;
+    }
+
+    input {
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: #666666;
+      font-size: 0.875rem;
+      margin-top: auto;
+    }
+
+    @media (max-width: 640px) {
+      .card {
+        padding: 1.5rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      h2 {
+        font-size: 1.125rem;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Stripe Connect Marketplace</h1>
-  <div class="container">
-    <h2>For Sellers</h2>
-    <p>Connect your Stripe account to start receiving payments:</p>
-    <a href="/connect/oauth" class="button">Connect with Stripe</a>
-  </div>
-  <div class="container">
-    <h2>Create Express Account</h2>
-    <form id="express-account-form">
-      <div>
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required>
+  <header class="header">
+    <div class="header-content">
+      <h1>Stripe Connect</h1>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="card">
+      <h2>For Sellers</h2>
+      <p>Connect your Stripe account to start receiving payments:</p>
+      <div style="text-align: center; margin-top: 1rem;">
+        <a href="/connect/oauth" class="button">Connect with Stripe</a>
       </div>
-      <div>
-        <label for="country">Country:</label><br>
-        <input type="text" id="country" name="country" value="US">
-      </div>
-      <button type="submit" class="button">Create Express Account</button>
-    </form>
-  </div>
+    </div>
+
+    <div class="card">
+      <h2>Create Express Account</h2>
+      <form id="express-account-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="Enter your email">
+        </div>
+        <div class="form-group">
+          <label for="country">Country</label>
+          <input type="text" id="country" name="country" value="US" placeholder="Enter country code">
+        </div>
+        <button type="submit" class="button">Create Express Account</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 Stripe Connect. All rights reserved.</p>
+  </footer>
 
   <script>
     document.getElementById('express-account-form').addEventListener('submit', async (e) => {
