@@ -58,7 +58,8 @@ app.get('/oauth/callback', async (req, res) => {
     // Store this account ID in your database
     // saveAccountToDatabase(connectedAccountId, response);
     
-    res.send(`Account connected successfully! Account ID: ${connectedAccountId}`);
+    // Redirect to the product listings page with the account ID
+    res.redirect(`/callback.html?account_id=${connectedAccountId}`);
   } catch (error) {
     console.error('OAuth error:', error);
     res.status(500).send('Error connecting Stripe account');

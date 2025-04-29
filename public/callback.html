@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connected Successfully - Sample Products</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+        .success-banner {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .product-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin: 0 0 10px 0;
+        }
+        .product-price {
+            font-size: 1.4em;
+            color: #2196F3;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .buy-button {
+            background-color: #635bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1em;
+        }
+        .buy-button:hover {
+            background-color: #4b45cc;
+        }
+        .account-id {
+            font-family: monospace;
+            background: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-banner">
+        <h1>🎉 Successfully Connected!</h1>
+        <p>Your Stripe account is now connected. Here are some sample products you can start selling:</p>
+        <p>Account ID: <span class="account-id" id="accountId">Loading...</span></p>
+    </div>
+
+    <div class="products-grid">
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" alt="Premium Sneakers" class="product-image">
+            <h2 class="product-title">Premium Sneakers</h2>
+            <p>Comfortable, stylish sneakers perfect for any occasion.</p>
+            <div class="product-price">$129.99</div>
+            <button class="buy-button" onclick="simulatePayment('Premium Sneakers', 12999)">Buy Now</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30" alt="Smart Watch" class="product-image">
+            <h2 class="product-title">Smart Watch</h2>
+            <p>Track your fitness and stay connected with this modern smartwatch.</p>
+            <div class="product-price">$199.99</div>
+            <button class="buy-button" onclick="simulatePayment('Smart Watch', 19999)">Buy Now</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Wireless Headphones" class="product-image">
+            <h2 class="product-title">Wireless Headphones</h2>
+            <p>Premium sound quality with noise cancellation technology.</p>
+            <div class="product-price">$159.99</div>
+            <button class="buy-button" onclick="simulatePayment('Wireless Headphones', 15999)">Buy Now</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d" alt="Running Shoes" class="product-image">
+            <h2 class="product-title">Running Shoes</h2>
+            <p>Lightweight and durable shoes for your daily run.</p>
+            <div class="product-price">$89.99</div>
+            <button class="buy-button" onclick="simulatePayment('Running Shoes', 8999)">Buy Now</button>
+        </div>
+    </div>
+
+    <script>
+        // Get the connected account ID from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const accountId = urlParams.get('account_id');
+        if (accountId) {
+            document.getElementById('accountId').textContent = accountId;
+        }
+
+        async function simulatePayment(productName, amount) {
+            try {
+                const response = await fetch('/api/create-payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        amount: amount,
+                        connectedAccountId: accountId,
+                        applicationFeeAmount: Math.floor(amount * 0.1) // 10% platform fee
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    alert(`Error: ${data.error}`);
+                } else {
+                    alert(`Payment simulation successful for ${productName}!\nPayment Intent ID: ${data.clientSecret.split('_secret')[0]}`);
+                }
+            } catch (error) {
+                alert(`Error processing payment: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html> 
